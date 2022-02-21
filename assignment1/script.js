@@ -117,9 +117,9 @@ async function fetchDefinition() {
    * URL: https://raw.githubusercontent.com/karthik-hr/js-utils/master/definition.json;
    */
   const response = await fetch("https://raw.githubusercontent.com/karthik-hr/js-utils/master/definition.json");
-  var temp = await response.json();
+  return await response.json().data;
 
-  return temp.data;
+
 }
 
 function findStats(definition) {
@@ -138,11 +138,6 @@ function findStats(definition) {
     falsy: 0,
   };
 
-  /**
-   * Write loop here to update stats
-   *
-   *
-   */
   stats.numberOfItems = instance.size(definition);
   var data = []
   for (let items of definition) {
@@ -150,7 +145,7 @@ function findStats(definition) {
       data.push(it);
     }
   }
-  //console.log(data)
+  
   for (let items of data) {
     if (instance.isNull(items)) {
       stats.null += 1;
