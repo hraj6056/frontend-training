@@ -1,9 +1,9 @@
 .modal-content {
-  background-color: #fefefe;
+  background-color: #bde9fa;
   margin: auto;
   padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
+  border: 1px solid rgb(250, 214, 241);
+  width: 50%;
 }
 .modal {
   position: fixed;
@@ -20,9 +20,10 @@
 .flip-card {
   background-color: transparent;
   width: 300px;
-  height: 200px;
+  height: 300px;
   border: 1px solid #f1f1f1;
-  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+  margin-left: 30%;
+  perspective: 1000px;
 }
 .flip-card-inner {
   position: relative;
@@ -38,7 +39,7 @@
 
 .image {
   width: 300px;
-  height: 200px;
+  height: 300px;
 }
 .flip-card-front,
 .flip-card-back {
@@ -55,7 +56,10 @@
 }
 
 .flip-card-back {
-  background-color: dodgerblue;
+  background-color: rgb(4, 10, 15);
   color: white;
   transform: rotateY(180deg);
+}
+.text {
+  margin-top: 20%;
 }
