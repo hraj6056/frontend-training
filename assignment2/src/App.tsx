@@ -65,24 +65,24 @@ const App: FunctionComponent = () => {
         }}
         className="form"
       >
-        <label htmlFor="moviename">
-          Moviename
-          <input
-            id="movieName"
-            value={movieName}
-            placeholder="Moviename"
-            onChange={(e) => updatemovieName(e.target.value)}
-          />
-        </label>
+        <label htmlFor="moviename">Moviename </label>
+        <input
+          id="movieName"
+          value={movieName}
+          placeholder="Moviename"
+          onChange={(e) => updatemovieName(e.target.value)}
+        />
+
         <label htmlFor="year" className="year">
-          Year
-          <input
-            id="year"
-            value={year}
-            placeholder="Year"
-            onChange={(e) => updateyear(e.target.value)}
-          />
+          Year{" "}
         </label>
+        <input
+          id="year"
+          value={year}
+          placeholder="Year"
+          onChange={(e) => updateyear(e.target.value)}
+        />
+
         <button className="button">Submit</button>
       </form>
       <br />
