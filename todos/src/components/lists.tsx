@@ -6,6 +6,7 @@ type IProps = {
     title: string;
     status: boolean;
   }[];
+  loading: boolean;
   removeListHandler: (id: string) => void;
   editListHandler: (id: string) => void;
   statusListHandler: (id: string) => void;
@@ -20,6 +21,7 @@ const Lists =(props : IProps) =>{
     <div>
       <List
         bordered
+        loading={props.loading}
         dataSource={props.data}
         renderItem={(item: Ilists) => (
           <List.Item>

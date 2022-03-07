@@ -7,7 +7,7 @@ import {
 } from "react-query";
 import "./style.css";
 import Lists from "./components/lists";
-import { Divider, Button, Form, Input } from "antd";
+import { Divider, Button, Form, Input,Result } from "antd";
 import { v4 as uuidv4 } from "uuid";
 
 type Ilists = {
@@ -16,28 +16,50 @@ type Ilists = {
   status: boolean;
 };
 
-const getLocalStorage = () => {
-  let list = localStorage.getItem("list");
-  if (list) {
-    return (list = JSON.parse(localStorage.getItem("list") || "[]"));
-  } else {
-    return [];
-  }
+// const getLocalStorage = () => {
+//   let list = window.localStorage.getItem("list");
+//   if (list) {
+//     return (list = JSON.parse(window.localStorage.getItem("list") || "[]"));
+//   } else {
+//     return [];
+//   }
+// };
+const getItemsFromLS = () => {
+  return JSON.parse(window.localStorage.getItem("list") as string);
+};
+const setItemsToLS = (items: any[]) => {
+  window.localStorage.setItem("title", JSON.stringify(items));
 };
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  const query = useQuery("todos", getLocalStorage);
+  
+  const useTodo = () => {
+    return useQuery<Ilists[]>(["list"], async () => {
+      return getItemsFromLS();
+    });
+  };
+
+  const useDeleteTodo = () => {
+    return useMutation(async ({ id }: Record<"id", string>) => {
+      const items = getItemsFromLS();
+      return setItemsToLS(items.filter((item :Ilists) => id !== item.id));
+    }, {});
+  };
+
+  const todoResults = useTodo();
+  const { data, isLoading,isError } = todoResults;
+  const deleteTodoResult = useDeleteTodo();
 
   const [name, setName] = useState<string>("");  
-  const [list, setList] = useState<Ilists[]>(getLocalStorage());
+  const [list, setList] = useState<Ilists[]>(data || []);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editId, setEditId] = useState<string>("");
 
-  useEffect(() => {
-    localStorage.setItem("list", JSON.stringify(list));
-  });
+  // useEffect(() => {
+  //   localStorage.setItem("list", JSON.stringify(list));
+  // });
 
   const handleSubmit = (values: any) => {
     if (values.name && isEditing) {
@@ -64,7 +86,14 @@ const App = () => {
   };
 
   const removeListHandler = (id: string) => {
-    setList(list.filter((item) => item.id !== id));
+    deleteTodoResult.mutate(
+      { id },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries("");
+        }
+      }
+    );
   };
   const editListHandler = (id: string) => {
     const editItem = list.find((item) => item.id === id);
@@ -87,6 +116,10 @@ const App = () => {
   const clearList = () => {
     setList([]);
   };
+
+  if (isError) {
+    return <Result status={"error"} />;
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -115,6 +148,7 @@ const App = () => {
             <h3> To Do's </h3>
             <Lists
               data={list}
+              loading={isLoading}
               removeListHandler={removeListHandler}
               editListHandler={editListHandler}
               statusListHandler={statusListHandler}
