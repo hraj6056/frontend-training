@@ -1,11 +1,10 @@
-
 import { Button, List } from "antd";
 
 type IProps = {
   data: {
     id: string;
     title: string;
-    status: string;
+    status: boolean;
   }[];
   removeListHandler: (id: string) => void;
   editListHandler: (id: string) => void;
@@ -14,7 +13,7 @@ type IProps = {
 type Ilists ={
   id: string
   title: string
-  status: string
+  status: boolean
 };
 const Lists =(props : IProps) =>{
   return (
@@ -38,7 +37,7 @@ const Lists =(props : IProps) =>{
               danger
               onClick={() => props.statusListHandler(item.id)}
             >
-              {item.status}
+              {item.status?"Completed":"Not Completed"}
             </Button>
             <Button
               type="primary"

@@ -1,4 +1,10 @@
 import { useState, useEffect } from "react";
+import {
+  useQuery,
+  useMutation,
+  QueryClient,
+  QueryClientProvider,
+} from "react-query";
 import "./style.css";
 import Lists from "./components/lists";
 import { Divider, Button, Form, Input } from "antd";
@@ -7,7 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 type Ilists = {
   id: string;
   title: string;
-  status: string;
+  status: boolean;
 };
 
 const getLocalStorage = () => {
@@ -19,12 +25,15 @@ const getLocalStorage = () => {
   }
 };
 
+const queryClient = new QueryClient();
+
 const App = () => {
-  const [name, setName] = useState<string>("");
+  const query = useQuery("todos", getLocalStorage);
+
+  const [name, setName] = useState<string>("");  
   const [list, setList] = useState<Ilists[]>(getLocalStorage());
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editId, setEditId] = useState<string>("");
-  const [status, setStatus] = useState<string>("Not Completed");
 
   useEffect(() => {
     localStorage.setItem("list", JSON.stringify(list));
@@ -47,7 +56,7 @@ const App = () => {
       const newItem = {
         id: uuidv4(),
         title: values.name,
-        status: "Not Completed",
+        status: false,
       };
       setList([...list, newItem]);
       setName("");
@@ -66,56 +75,57 @@ const App = () => {
     }
   };
   const statusListHandler = (id: string) => {
-    const statusItem = list.find((item) => item.id === id);
-    if (statusItem) {
-      if (statusItem.title === "Completed") {
-        setStatus("Not Completed")
-      }
-      else {
-        setStatus("Completed")
-      }
-    }
+    setList(
+      list.map((item) => {
+        if (item.id === id) {
+          return { ...item, status: !item.status };
+        }
+        return item;
+      })
+    );
   };
   const clearList = () => {
     setList([]);
   };
 
   return (
-    <div className="App">
-      <Form
-        name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
-        onFinish={handleSubmit}
-        autoComplete="off"
-      >
-        <Form.Item label={"name"} name={"name"} rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            {isEditing ? "Edit Todo" : "Add Todo"}
-          </Button>
-        </Form.Item>
-      </Form>
-      <Divider dashed />
+    <QueryClientProvider client={queryClient}>
+      <div className="App">
+        <Form
+          name="basic"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={{ remember: true }}
+          onFinish={handleSubmit}
+          autoComplete="off"
+        >
+          <Form.Item label={"name"} name={"name"} rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Button type="primary" htmlType="submit">
+              {isEditing ? "Edit Todo" : "Add Todo"}
+            </Button>
+          </Form.Item>
+        </Form>
+        <Divider dashed />
 
-      {list.length > 0 && (
-        <div>
-          <h3> To Do's </h3>
-          <Lists
-            data={list}
-            removeListHandler={removeListHandler}
-            editListHandler={editListHandler}
-            statusListHandler={statusListHandler}
-          />
-          <Button type="primary" danger onClick={clearList}>
-            Clear Todo's
-          </Button>
-        </div>
-      )}
-    </div>
+        {list.length > 0 && (
+          <div>
+            <h3> To Do's </h3>
+            <Lists
+              data={list}
+              removeListHandler={removeListHandler}
+              editListHandler={editListHandler}
+              statusListHandler={statusListHandler}
+            />
+            <Button type="primary" danger onClick={clearList}>
+              Clear Todo's
+            </Button>
+          </div>
+        )}
+      </div>
+    </QueryClientProvider>
   );
 };
 
