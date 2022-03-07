@@ -11,11 +11,13 @@ type IProps = {
   editListHandler: (id: string) => void;
   statusListHandler: (id: string) => void;
 };
+
 type Ilists ={
   id: string
   title: string
   status: boolean
 };
+
 const Lists =(props : IProps) =>{
   return (
     <div>

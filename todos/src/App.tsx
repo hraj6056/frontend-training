@@ -24,9 +24,11 @@ type Ilists = {
 //     return [];
 //   }
 // };
+
 const getItemsFromLS = () => {
   return JSON.parse(window.localStorage.getItem("list") as string);
 };
+
 const setItemsToLS = (items: any[]) => {
   window.localStorage.setItem("title", JSON.stringify(items));
 };
@@ -95,6 +97,7 @@ const App = () => {
       }
     );
   };
+
   const editListHandler = (id: string) => {
     const editItem = list.find((item) => item.id === id);
     if (editItem) {
@@ -103,6 +106,7 @@ const App = () => {
       setName(editItem.title);
     }
   };
+
   const statusListHandler = (id: string) => {
     setList(
       list.map((item) => {
@@ -113,6 +117,7 @@ const App = () => {
       })
     );
   };
+  
   const clearList = () => {
     setList([]);
   };
