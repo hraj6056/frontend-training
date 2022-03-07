@@ -68,9 +68,12 @@ const App = () => {
   const statusListHandler = (id: string) => {
     const statusItem = list.find((item) => item.id === id);
     if (statusItem) {
-      setStatus(
-        (statusItem?.status === "Not Completed" ? "Completed" : "Not Completed")
-      );
+      if (statusItem.title === "Completed") {
+        setStatus("Not Completed")
+      }
+      else {
+        setStatus("Completed")
+      }
     }
   };
   const clearList = () => {

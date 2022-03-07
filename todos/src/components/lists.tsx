@@ -22,10 +22,9 @@ const Lists =(props : IProps) =>{
       <List
         bordered
         dataSource={props.data}
-        renderItem={(item : Ilists) => (
+        renderItem={(item: Ilists) => (
           <List.Item>
-            
-            {item.title}
+            <div style={{color:"darkred"}}>{item.title}</div>
 
             <Button
               type="primary"
