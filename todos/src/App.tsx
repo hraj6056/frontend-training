@@ -88,14 +88,7 @@ const App = () => {
   };
 
   const removeListHandler = (id: string) => {
-    deleteTodoResult.mutate(
-      { id },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries("");
-        }
-      }
-    );
+    setList(list.filter((item) => item.id !== id));
   };
 
   const editListHandler = (id: string) => {
@@ -117,7 +110,7 @@ const App = () => {
       })
     );
   };
-  
+
   const clearList = () => {
     setList([]);
   };
