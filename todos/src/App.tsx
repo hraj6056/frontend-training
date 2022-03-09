@@ -151,7 +151,7 @@ const App = () => {
               editListHandler={editListHandler}
               statusListHandler={statusListHandler}
             />
-            <Button type="primary" danger onClick={clearList}>
+            <Button type="primary" danger onClick={clearList} style={{ marginTop: "7px" }}>
               Clear Todo's
             </Button>
           </div>
