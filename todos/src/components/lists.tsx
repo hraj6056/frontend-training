@@ -27,12 +27,13 @@ const Lists =(props : IProps) =>{
         dataSource={props.data}
         renderItem={(item: Ilists) => (
           <List.Item>
-            <div style={{color:"darkred"}}>{item.title}</div>
+            <div style={{ color: "blue" }}>{item.title}</div>
 
             <Button
               type="primary"
               block
               onClick={() => props.editListHandler(item.id)}
+              style={{ marginLeft: "10px" }}
             >
               Edit
             </Button>
@@ -40,6 +41,7 @@ const Lists =(props : IProps) =>{
               type="primary"
               danger
               onClick={() => props.statusListHandler(item.id)}
+              style={{ marginLeft: "10px" }}
             >
               {item.status?"Completed":"Not Completed"}
             </Button>
@@ -47,6 +49,7 @@ const Lists =(props : IProps) =>{
               type="primary"
               danger
               onClick={() => props.removeListHandler(item.id)}
+              style={{ marginLeft: "10px" }}
             >
               Delete
             </Button>
